@@ -94,8 +94,8 @@ export function ArtifactsOrbit({
           x = xMin
           y = yMax - (u - 3) * (yMax - yMin)
         }
-        // Большой jitter со смещением к центру (50, 50)
-        const jitterTowardCenter = 0.10 + seeded(index, 1) * 0.10 // 10–20% смещения к центру
+        // Джиттер: от 10% от центра до 15% к центру (детерминированно по index)
+        const jitterTowardCenter = -0.10 + seeded(index, 1) * 0.25
         const cx = 50
         const cy = 50
         const finalX = x + (cx - x) * jitterTowardCenter + (seeded(index, 2) - 0.5) * 6
@@ -206,29 +206,6 @@ export function ArtifactsOrbit({
             b.y = clamp(b.y + offsetY, 10, 90)
           }
         }
-      }
-    }
-
-    // После всех смещений центрируем «центр масс» нод обратно в (50, 50),
-    // чтобы всё кольцо не уползало вправо или вниз.
-    if (adjusted.length > 0) {
-      const avg = adjusted.reduce(
-        (acc, p) => {
-          acc.x += p.x
-          acc.y += p.y
-          return acc
-        },
-        { x: 0, y: 0 },
-      )
-      avg.x /= adjusted.length
-      avg.y /= adjusted.length
-
-      const shiftX = 50 - avg.x
-      const shiftY = 50 - avg.y
-
-      for (const p of adjusted) {
-        p.x = clamp(p.x + shiftX, 10, 90)
-        p.y = clamp(p.y + shiftY, 10, 90)
       }
     }
 
@@ -412,14 +389,13 @@ export function ArtifactsOrbit({
                 style={{
                   left: `${x}%`,
                   top: `${y}%`,
-                  transform: 'translate(-50%, -50%)',
                 }}
                 drag
                 dragMomentum={false}
                 dragElastic={0.35}
                 dragTransition={{
-                  bounceStiffness: 420,
-                  bounceDamping: 26,
+                  bounceStiffness: 26,
+                  bounceDamping: 18,
                 }}
                 dragConstraints={{
                   left: -80,
@@ -452,7 +428,9 @@ export function ArtifactsOrbit({
                   damping: 20,
                 }}
               >
-                <ArtifactNode artifact={artifact} isHighlighted={isHighlighted} />
+                <div className={styles.nodeCenter} style={{ transform: 'translate(-50%, -50%)' }}>
+                  <ArtifactNode artifact={artifact} isHighlighted={isHighlighted} />
+                </div>
               </motion.div>
             )
           })}
