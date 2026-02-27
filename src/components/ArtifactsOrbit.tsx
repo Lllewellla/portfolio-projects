@@ -4,8 +4,6 @@ import type { ProjectArtifact, Stakeholder } from '../types/project'
 import styles from './ArtifactsOrbit.module.css'
 import nodeStyles from './ArtifactNode.module.css'
 
-const TWO_PI = Math.PI * 2
-
 /** Детерминированный псевдо-рандом по индексу (раскладка не прыгает при обновлениях). */
 function seeded(index: number, salt: number): number {
   const x = Math.sin(index * 12.9898 + salt * 78.233) * 43758.5453
