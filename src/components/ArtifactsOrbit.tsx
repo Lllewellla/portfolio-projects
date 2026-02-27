@@ -6,6 +6,12 @@ import nodeStyles from './ArtifactNode.module.css'
 
 const TWO_PI = Math.PI * 2
 
+/** Детерминированный псевдо-рандом по индексу (раскладка не прыгает при обновлениях). */
+function seeded(index: number, salt: number): number {
+  const x = Math.sin(index * 12.9898 + salt * 78.233) * 43758.5453
+  return x - Math.floor(x)
+}
+
 const stakeholderColors: Record<Stakeholder, string> = {
   client: '#4fd1ff',
   marketing: '#ff9f5a',
@@ -67,18 +73,36 @@ export function ArtifactsOrbit({
   const slots = useMemo(
     () =>
       Array.from({ length: visibleCount }).map((_, index) => {
-        // Три «кольца» с разным базовым радиусом, чтобы ноды
-        // были на разных расстояниях от центра и смотрелись объёмнее
-        const ringIndex = index % 3
-        const baseRadius = 0.32 + ringIndex * 0.08 // 0.32, 0.40, 0.48
-        const baseAngle = (index / visibleCount) * TWO_PI
-        const jitterRadius = (Math.random() - 0.5) * 0.04
-        const jitterAngle = (Math.random() - 0.5) * 0.14
-
-        return {
-          radius: baseRadius + jitterRadius,
-          angle: baseAngle + jitterAngle,
+        // Кольцо-ось = контур hero (прямоугольник). Распределяем точки по периметру.
+        const margin = 6 // отступ от края hero в %
+        const xMin = margin
+        const xMax = 100 - margin
+        const yMin = margin
+        const yMax = 100 - margin
+        const t = (index + 0.5) / visibleCount // 0..1 вдоль периметра
+        const u = t * 4 // 0..4: четыре стороны
+        let x: number
+        let y: number
+        if (u < 1) {
+          x = xMin + u * (xMax - xMin)
+          y = yMin
+        } else if (u < 2) {
+          x = xMax
+          y = yMin + (u - 1) * (yMax - yMin)
+        } else if (u < 3) {
+          x = xMax - (u - 2) * (xMax - xMin)
+          y = yMax
+        } else {
+          x = xMin
+          y = yMax - (u - 3) * (yMax - yMin)
         }
+        // Большой jitter со смещением к центру (50, 50)
+        const jitterTowardCenter = 0.35 + seeded(index, 1) * 0.45 // 35–80% смещения к центру
+        const cx = 50
+        const cy = 50
+        const finalX = x + (cx - x) * jitterTowardCenter + (seeded(index, 2) - 0.5) * 6
+        const finalY = y + (cy - y) * jitterTowardCenter + (seeded(index, 3) - 0.5) * 6
+        return { x: finalX, y: finalY }
       }),
     [visibleCount],
   )
@@ -151,13 +175,11 @@ export function ArtifactsOrbit({
     const clamp = (value: number, min: number, max: number) =>
       Math.max(min, Math.min(max, value))
 
-    // Базовая выкладка по полярным координатам
+    // Базовая выкладка: слоты уже заданы как (x, y) по контуру hero с jitter к центру
     const base = visibleArtifacts.map((artifact) => {
       const slot = slots[artifact.slotIndex % slots.length]
-      const rawX = 50 + Math.cos(slot.angle) * slot.radius * 100
-      const rawY = 50 + Math.sin(slot.angle) * slot.radius * 100
-      const x = clamp(rawX, 10, 90)
-      const y = clamp(rawY, 10, 90)
+      const x = clamp(slot.x, 10, 90)
+      const y = clamp(slot.y, 10, 90)
       return { artifact, x, y }
     })
 
