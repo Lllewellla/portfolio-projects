@@ -109,7 +109,7 @@ export function parseProjectMd(md: string): { meta: ProjectMeta; artifacts: Proj
 }
 
 export async function loadProjectContent(
-  url = '/content/project.md',
+  url = `${import.meta.env.BASE_URL}content/project.md`,
 ): Promise<{ meta: ProjectMeta; artifacts: ProjectArtifact[] }> {
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Failed to load content: ${res.status}`)

@@ -10,7 +10,7 @@ function App() {
   const [artifacts, setArtifacts] = useState<ProjectArtifact[]>(mockArtifacts)
 
   useEffect(() => {
-    loadProjectContent('/content/project.md')
+    loadProjectContent()
       .then(({ meta, artifacts: a }) => {
         setProjectMeta((prev) => {
           const str = (s: string | undefined) => (s && s.trim() ? s.trim() : '')
