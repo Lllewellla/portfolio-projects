@@ -1,0 +1,59 @@
+.root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.linksSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.nodeLayer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.node {
+  position: absolute;
+  max-width: 220px;
+  pointer-events: auto;
+}
+
+.groupedRoot {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  padding: 1.5rem;
+  pointer-events: auto;
+}
+
+.groupedGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  max-width: 100%;
+}
+
+.groupedCard {
+  min-width: 0;
+}
+
+@media (max-width: 960px) {
+  .root {
+    inset: 0;
+  }
+
+  .node {
+    max-width: 180px;
+  }
+
+  .groupedGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+

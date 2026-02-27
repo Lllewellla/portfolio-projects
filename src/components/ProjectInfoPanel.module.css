@@ -1,0 +1,82 @@
+.panel {
+  height: 100%;
+  border-radius: 24px;
+  padding: 1.75rem 1.9rem;
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at top left, rgba(70, 118, 255, 0.22), transparent 55%),
+    linear-gradient(145deg, #050712, #070b18);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(88, 125, 197, 0.45);
+  color: #f3f5ff;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: 0.78rem;
+  color: rgba(202, 214, 255, 0.84);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 1.75rem;
+  font-size: 0.85rem;
+}
+
+.sectionTitle {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(163, 181, 232, 0.9);
+  margin-bottom: 0.4rem;
+}
+
+.sectionBody {
+  color: rgba(228, 235, 255, 0.9);
+  line-height: 1.5;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+}
+
+.chip {
+  font-size: 0.72rem;
+  padding: 0.16rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(9, 14, 40, 0.9);
+  border: 1px solid rgba(119, 155, 238, 0.65);
+}
+
+@media (max-width: 960px) {
+  .panel {
+    margin-top: 0.75rem;
+    padding: 1.4rem 1.4rem 1.6rem;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
