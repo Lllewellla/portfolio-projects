@@ -95,7 +95,7 @@ export function ArtifactsOrbit({
           y = yMax - (u - 3) * (yMax - yMin)
         }
         // Большой jitter со смещением к центру (50, 50)
-        const jitterTowardCenter = 0.35 + seeded(index, 1) * 0.45 // 35–80% смещения к центру
+        const jitterTowardCenter = 0.10 + seeded(index, 1) * 0.10 // 10–20% смещения к центру
         const cx = 50
         const cy = 50
         const finalX = x + (cx - x) * jitterTowardCenter + (seeded(index, 2) - 0.5) * 6
