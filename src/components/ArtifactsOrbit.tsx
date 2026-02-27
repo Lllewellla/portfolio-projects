@@ -94,12 +94,12 @@ export function ArtifactsOrbit({
           x = xMin
           y = yMax - (u - 3) * (yMax - yMin)
         }
-        // Джиттер: от 10% от центра до 15% к центру (детерминированно по index)
-        const jitterTowardCenter = -0.10 + seeded(index, 1) * 0.25
+        // Джиттер: от 10% от центра до 15% к центру (усилен в 2 раза)
+        const jitterTowardCenter = -0.20 + seeded(index, 1) * 0.50
         const cx = 50
         const cy = 50
-        const finalX = x + (cx - x) * jitterTowardCenter + (seeded(index, 2) - 0.5) * 6
-        const finalY = y + (cy - y) * jitterTowardCenter + (seeded(index, 3) - 0.5) * 6
+        const finalX = x + (cx - x) * jitterTowardCenter + (seeded(index, 2) - 0.5) * 12
+        const finalY = y + (cy - y) * jitterTowardCenter + (seeded(index, 3) - 0.5) * 12
         return { x: finalX, y: finalY }
       }),
     [visibleCount],
