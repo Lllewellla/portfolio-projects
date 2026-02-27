@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // для GitHub Pages под путём /portfolio-projects/
-  base: '/portfolio-projects/',
+  // относительная база, чтобы бандл корректно работал
+  // и локально, и на GitHub Pages под /portfolio-projects/
+  base: './',
 })
